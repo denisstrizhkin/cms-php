@@ -8,7 +8,7 @@ if (isset($_SESSION['id'])) {
     die();
 }
 
-if (isset($_POST['email']) && isset($_POST['password'])) {
+if (isset($_POST['email'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
@@ -28,8 +28,6 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         header('Location: /dashboard.php');
         die();
     }
-    $db_con = null;
-    $query = null;
 }
 
 include('includes/header.inc.php');

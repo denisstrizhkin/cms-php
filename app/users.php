@@ -13,9 +13,7 @@ $sql = 'select * from users';
 $query = $db_con->prepare($sql);
 $query->execute();
 
-$result = $query->fetchAll();
-var_dump($result);
-
+$users = $query->fetchAll();
 ?>
 
 <h1>Users management</h1>
@@ -36,7 +34,7 @@ var_dump($result);
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($result as $user) { ?>
+        <?php foreach ($users as $user) { ?>
             <tr>
                 <td><?php echo $user['id'];       ?></td>
                 <td><?php echo $user['username']; ?></td>
@@ -50,6 +48,8 @@ var_dump($result);
         <?php } ?>
     </tbody>
 </table>
+
+<a href="/users_add.php">Add new user</a>
 
 <?php
 include('includes/footer.inc.php');
