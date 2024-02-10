@@ -1,6 +1,7 @@
 <?php
 
-function db_connect(): PDO {
+function db_connect(): PDO
+{
     $db_host = $_ENV["DB_HOST"];
     $db_port = $_ENV["DB_PORT"];
     $db_name = $_ENV["DB_NAME"];
@@ -12,5 +13,3 @@ function db_connect(): PDO {
 
     return new PDO($db_str, $db_user, $db_passwd, $options);
 }
-
-?>
