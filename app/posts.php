@@ -8,7 +8,7 @@ secure();
 include('includes/header.inc.php');
 ?>
 
-<h1>Dashboard</h1>
+<h1>Posts management</h1>
 <ul>
     <li><a href="/users.php">Users management</a></li>
     <li><a href="/posts.php">Posts management</a></li>
