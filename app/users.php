@@ -8,11 +8,17 @@ secure();
 include('includes/header.inc.php');
 
 $db_con = db_connect();
+if (isset($_GET['delete'])) {
+    $sql = 'delete from users where id=:id';
+    $query = $db_con->prepare($sql);
+
+    $query->execute(['id' => $_GET['delete']]);
+}
 
 $sql = 'select * from users';
 $query = $db_con->prepare($sql);
-$query->execute();
 
+$query->execute();
 $users = $query->fetchAll();
 ?>
 

@@ -91,7 +91,7 @@ include('includes/header.inc.php');
         <input type="checkbox" name="active" id="active" <?php if ($user['active']) echo 'checked' ?> />
         <label for="active">Active</label>
 
-        <input type="submit" value="Add user" />
+        <input type="submit" value="Update user" />
     </form>
 
 <?php }
