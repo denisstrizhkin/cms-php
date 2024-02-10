@@ -23,7 +23,7 @@ if (isset($_POST['title'])) {
         die();
     } catch (PDOException $err) {
         if ($err->getCode() == '23000') {
-            set_message('Username or Email were already taken');
+            set_message('Author does not exist');
         } else {
             set_message($err->getMessage());
         }
