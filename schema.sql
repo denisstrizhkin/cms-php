@@ -12,7 +12,7 @@ create table posts (
     title     varchar(50)  not null,
     content   text         not null,
     author_id int unsigned not null,
-    date      date         not null,
+    changed   datetime     not null default current_timestamp,
     added     datetime     not null default current_timestamp,
 
     foreign key (author_id) references users(id) on delete cascade

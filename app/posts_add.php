@@ -5,22 +5,21 @@ include('includes/functions.inc.php');
 
 secure();
 
-if (isset($_POST['email'])) {
+if (isset($_POST['title'])) {
     $db_con = db_connect();
 
-    $sql = 'insert into users (username, email, password, active)' .
-        'values (:username, :email, :password, :active)';
+    $sql = 'insert into posts (title, author_id, content) ' .
+        'values (:title, :author_id, :content)';
     $query = $db_con->prepare($sql);
 
     try {
         $query->execute([
-            'username' => $_POST['username'],
-            'email' => $_POST['email'],
-            'password' => $_POST['password'],
-            'active' => (int) isset($_POST['active'])
+            'title' => $_POST['title'],
+            'author_id' => $_POST['author_id'],
+            'content' => $_POST['content'],
         ]);
-        set_message('A new user ' . $_POST['username'] . ' has been added');
-        header('Location: /users.php');
+        set_message('A new post ' . $_POST['title'] . ' has been added');
+        header('Location: /posts.php');
         die();
     } catch (PDOException $err) {
         if ($err->getCode() == '23000') {
@@ -28,7 +27,7 @@ if (isset($_POST['email'])) {
         } else {
             set_message($err->getMessage());
         }
-        header('Location: /users_add.php');
+        header('Location: /posts_add.php');
         die();
     }
 }
@@ -36,26 +35,23 @@ if (isset($_POST['email'])) {
 include('includes/header.inc.php');
 ?>
 
-<h1>Add user</h1>
+<h1>Add post</h1>
 <ul>
     <li><a href="/users.php">Users management</a></li>
     <li><a href="/posts.php">Posts management</a></li>
 </ul>
 
 <form method="post">
-    <label for="username">Username</label>
-    <input type="username" name="username" id="username" required placeholder="username" />
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title" required placeholder="title" />
 
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" required placeholder="john.doe@gmail.com" />
+    <label for="author_id">Author id</label>
+    <input type="number" name="author_id" id="author_id" required placeholder="author_id" />
 
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required placeholder="password" />
+    <label for="password">Content</label>
+    <textarea name="content" id="content" required placeholder="Enter your text here..."></textarea>
 
-    <input type="checkbox" name="active" id="active" checked />
-    <label for="active">Active</label>
-
-    <input type="submit" value="Add user" />
+    <input type="submit" value="Add post" />
 </form>
 
 <?php
