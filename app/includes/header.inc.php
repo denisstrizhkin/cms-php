@@ -21,3 +21,7 @@
             <li><a href="/logout.php">Logout</a></li>
         </ul>
     </nav>
+
+    <?php
+    get_message();
+    ?>

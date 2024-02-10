@@ -24,6 +24,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $_SESSION['username'] = $result['username'];
         $_SESSION['email'] = $result['email'];
 
+        set_message("You have succesfully logged in as " . $_SESSION['username']);
         header('Location: /dashboard.php');
         die();
     }
