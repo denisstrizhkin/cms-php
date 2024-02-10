@@ -8,8 +8,6 @@ if (isset($_SESSION['id'])) {
     die();
 }
 
-include('includes/header.inc.php');
-
 if (isset($_POST['email']) && isset($_POST['password'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -26,12 +24,14 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $_SESSION['username'] = $result['username'];
         $_SESSION['email'] = $result['email'];
 
-        header('Location: dashboard.php');
+        header('Location: /dashboard.php');
         die();
     }
     $db_con = null;
     $query = null;
 }
+
+include('includes/header.inc.php');
 ?>
 
 <form method="post">
