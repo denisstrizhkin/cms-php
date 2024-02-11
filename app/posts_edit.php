@@ -5,93 +5,67 @@ include('includes/functions.inc.php');
 
 secure();
 
-if (isset($_POST['email'])) {
+if (isset($_POST['title'])) {
     $db_con = db_connect();
 
-    $sql = null;
-    $values = null;
-    if ($_POST['password']) {
-        $sql = 'update users set ' . 
-            'username = :username, email = :email, password = :password, active = :active ' .
-            'where id = :id';
-        $values = [
-            'username' => $_POST['username'],
-            'email' => $_POST['email'],
-            'password' => $_POST['password'],
-            'active' => (int) isset($_POST['active']),
-            'id' => (int) $_GET['id']
-        ];
-    } else {
-        $sql = 'update users set ' . 
-            'username = :username, email = :email, active = :active ' .
-            'where id = :id';
-        $values = [
-            'username' => $_POST['username'],
-            'email' => $_POST['email'],
-            'active' => (int) isset($_POST['active']),
-            'id' => (int) $_GET['id']
-        ];
-    }
-
+    $sql = 'update posts set ' .
+        'title = :title, content = :content, changed = :changed ' .
+        'where id = :id';
     $query = $db_con->prepare($sql);
     try {
-        $query->execute($values);
-        set_message('A user ' . $_POST['username'] . ' has been updated');
-        header('Location: /users.php');
+        $date = date('Y-m-d H:i:s');
+        $query->execute([
+            'title' => $_POST['title'],
+            'content' => $_POST['content'],
+            'changed' => $date,
+            'id' => (int) $_GET['id']
+        ]);
+        set_message('A post ' . $_POST['title'] . ' has been updated');
+        header('Location: /posts.php');
         die();
     } catch (PDOException $err) {
-        if ($err->getCode() == '23000') {
-            set_message('Username or Email were already taken');
-        } else {
-            set_message($err->getMessage());
-        }
-        header('Location: /users_edit.php?id=' . $_GET['id']);
+        set_message($err->getMessage());
+        header('Location: /posts_edit.php?id=' . $_GET['id']);
         die();
     }
 }
 
-$user = null;
+$post = null;
 if (!isset($_GET['id'])) {
-    set_message('No user selected');
+    set_message('No post selected');
 } else {
     $db_con = db_connect();
 
-    $sql = 'select * from users where id = :id';
+    $sql = 'select * from posts where id = :id';
     $query = $db_con->prepare($sql);
 
     $query->execute(['id' => $_GET['id']]);
-    $user = $query->fetch();
+    $post = $query->fetch();
 
-    if (!$user) {
-        set_message('User does not exist');
+    if (!$post) {
+        set_message('Post does not exist');
     }
 }
 
 include('includes/header.inc.php');
 ?>
 
-<h1>Edit user</h1>
+<h1>Edit post</h1>
 <ul>
     <li><a href="/users.php">Users management</a></li>
     <li><a href="/posts.php">Posts management</a></li>
 </ul>
 
-<?php if ($user) { ?>
+<?php if ($post) { ?>
 
     <form method="post">
-        <label for="username">Username</label>
-        <input type="username" name="username" id="username" required placeholder="username" value=<?php echo $user['username']; ?> />
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" required placeholder="title" value="<?php echo $post['title'] ?>" />
 
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" required placeholder="john.doe@gmail.com" value=<?php echo $user['email']; ?> />
+        <label for="content">Content</label>
+        <textarea name="content" id="content" required placeholder="Enter your text here..."><?php echo $post['content'] ?></textarea>
 
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" placeholder="password" />
-
-        <input type="checkbox" name="active" id="active" <?php if ($user['active']) echo 'checked' ?> />
-        <label for="active">Active</label>
-
-        <input type="submit" value="Update user" />
+        <input type="submit" value="Update post" />
     </form>
 
 <?php }

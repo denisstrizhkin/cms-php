@@ -48,7 +48,7 @@ include('includes/header.inc.php');
     <label for="author_id">Author id</label>
     <input type="number" name="author_id" id="author_id" required placeholder="author_id" />
 
-    <label for="password">Content</label>
+    <label for="content">Content</label>
     <textarea name="content" id="content" required placeholder="Enter your text here..."></textarea>
 
     <input type="submit" value="Add post" />
