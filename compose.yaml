@@ -13,7 +13,9 @@ services:
   php:
     depends_on:
       - mysql
-    build: ./php-backend
+    build:
+      context: .
+      dockerfile: PHP.Dockerfile
     environment:
       - DB_HOST=mysql
       - DB_PORT=3306
